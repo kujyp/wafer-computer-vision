@@ -3,7 +3,7 @@ import cv2
 import logging
 import numpy as np
 
-from src_0602.Loggger import logger
+from src_0602.Logger import logger
 
 MINIMUM_POINTS_FOR_LINE = 3
 
