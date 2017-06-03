@@ -1,13 +1,21 @@
 import cv2
 
+import numpy as np
+
+from src_0602.Logger import logger
+
 
 def subtractBackground(img):
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
-    fgbg = cv2.createBackgroundSubtractorKNN()
-    # fgbg = cv2.createBackgroundSubtractorMOG2()
+    clone = img
+    mask = np.zeros(clone.shape[:2], np.uint8)
+    bgdModel = np.zeros((1, 65), np.float64)
+    fgdModel = np.zeros((1, 65), np.float64)
+    logger.info(clone.shape)
+    rect = (900, 0, 400, 1080)
+    cv2.grabCut(clone, mask, rect, bgdModel, fgdModel, 5, cv2.GC_INIT_WITH_RECT)
+    color = (255,0,0)
+    cv2.rectangle(clone,(rect[0], rect[1]), (rect[2], rect[3]), color, 5)
+    mask2 = np.where((mask == 2) | (mask == 0), 0, 1).astype('uint8')
+    clone = clone * mask2[:, :, np.newaxis]
 
-    img = fgbg.apply(img)
-    # img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
-
-
-    return img
+    return clone

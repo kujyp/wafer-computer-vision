@@ -20,11 +20,11 @@ while True:
     if frame is None:
         break
 
-    subtracked = subtractBackground(frame)
+    # subtracked = subtractBackground(frame)
+    # windowManager.imgshow(subtracked, 'subtracked')
     contour = detectContourLine(frame)
 
     windowManager.imgshow(frame, 'original')
-    windowManager.imgshow(subtracked, 'subtracked')
     windowManager.imgshow(contour, 'contourvideo')
 
     second = 1
