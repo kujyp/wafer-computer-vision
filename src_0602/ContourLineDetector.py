@@ -16,5 +16,4 @@ def detectContourLine(img):
         x1, y1, x2, y2 = line[0]
         img = cv2.line(img, (x1, y1), (x2, y2), (0, 255, 0), 2)
 
-
     return img

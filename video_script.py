@@ -10,7 +10,8 @@ from src_0602.VideoLoader import VideoLoader
 
 video = VideoLoader.getInstance()
 windowManager = WindowManager.getInstance()
-windowManager.addWindow(['subtracked',
+windowManager.addWindow(['original',
+                         'subtracked',
                          'contourvideo'])
 
 
@@ -22,6 +23,7 @@ while True:
     subtracked = subtractBackground(frame)
     contour = detectContourLine(frame)
 
+    windowManager.imgshow(frame, 'original')
     windowManager.imgshow(subtracked, 'subtracked')
     windowManager.imgshow(contour, 'contourvideo')
 

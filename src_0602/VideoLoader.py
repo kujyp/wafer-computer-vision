@@ -1,7 +1,9 @@
 import os
 
 import cv2
+import random
 
+from src_0602.Logger import logger
 from src_0602.Singleton import Singleton
 
 
@@ -18,7 +20,13 @@ class VideoLoader(Singleton):
 
     @property
     def getFilename(self):
-        filename = 'ch01 Lup ch1.mpg'
+        filenames = []
+        for root, dirs, files in os.walk(self.getDir):
+            filenames += files
+        nidx = len(filenames)
+        rndidx = random.randint(0,nidx-1)
+        filename = filenames[rndidx]
+        logger.info("nidx={}, rndidx={}, filename={}".format(nidx, rndidx,filename))
         return filename
 
     @property
@@ -36,3 +44,16 @@ class VideoLoader(Singleton):
                 break
 
         return img
+
+def load_allpath(path):
+    res = []
+
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            if file[0] == '.':
+                print("ignore %s" % os.path.join(root, file))
+                continue
+            else:
+                filepath = os.path.join(root, file)
+                res.append(filepath)
+    return res
