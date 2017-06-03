@@ -2,7 +2,7 @@ import cv2
 import os
 import time
 
-from src_0602.CornerDetector import detectCorner
+from src_0602.CornerDetector import detectCornerWithShiTomasi, detectCornerWithFAST, detectCornerWithHarris
 from src_0602.WindowManager import WindowManager
 from src_0602.BackgroundSubtractor import subtractBackground
 from src_0602.ContourLineDetector import detectContourLine
@@ -13,6 +13,7 @@ video = VideoLoader.getInstance()
 windowManager = WindowManager.getInstance()
 windowManager.addWindow(['original',
                          'corner',
+                         'surf',
                          'contourvideo'])
 
 
@@ -24,8 +25,11 @@ while True:
     windowManager.imgshow(frame, 'original')
     # subtracked = subtractBackground(frame)
     # windowManager.imgshow(subtracked, 'subtracked')
-    corner = detectCorner(frame)
+    corner = detectCornerWithFAST(frame)
     windowManager.imgshow(corner, 'corner')
+    # corner = detectCornerWithShiTomasi(frame)
+    # corner = detectCornerWithHarris(frame)
+    # windowManager.imgshow(corner, 'surf')
     contour = detectContourLine(frame)
     windowManager.imgshow(contour, 'contourvideo')
 
