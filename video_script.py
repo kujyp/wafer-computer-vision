@@ -3,6 +3,7 @@ import time
 
 from logics.contour_line_detector import detectContourLine
 from logics.corner_detector import detectCornerWithFAST
+from models.line import Line
 from utils.visualize.videoloader import VideoLoader
 from utils.visualize.windowmanager import WindowManager
 
@@ -13,6 +14,8 @@ windowManager.addWindow(['original',
                          'surf',
                          'contourvideo'])
 
+a = Line((20,15), (40,20))
+print(a.baseorigin)
 
 while True:
     frame = video.next()
