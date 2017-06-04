@@ -18,11 +18,8 @@ def detectHoughLines(image):
     from logics.contour_line_detector import findMainLines
     mainline = findMainLines(lines, maindirectionline)
     mask = np.zeros(img.shape)
-    mask = Line.drawLines(mask, mainline.baseline)
-    WindowManager.getInstance().imgshow(mask, '2')
-    third = Line.drawLines(mask, lines)
-    WindowManager.getInstance().imgshow(third, '3')
-    fourth = Line.drawLines(image, mainline.baseline)
-    WindowManager.getInstance().imgshow(fourth , '4')
+    maskwithlines = Line.drawLines(mask, lines)
+    imagewithlines = Line.drawLines(image, lines)
+    withmainline = Line.drawLines(image, mainline.baseline)
 
-    return mask, mainline
+    return maskwithlines, imagewithlines, withmainline

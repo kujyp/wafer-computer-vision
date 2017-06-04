@@ -21,7 +21,7 @@ HORIZONTAL_DIRACTION = (1.0, 0.0)
 LINE_LIMITLENGTH = VIDEO_RESOLUTION['x'] / 40
 
 def detectContourLine(image):
-    mask, mainline = detectHoughLines(image)
+    # mask, mainline = detectHoughLines(image)
     # WindowManager.getInstance().imgshow(mask, 'surf')
     # lines = findMainLines(mask, mainDirection)
     # mask = Line.drawLines(image, lines)

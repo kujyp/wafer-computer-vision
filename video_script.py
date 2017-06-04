@@ -5,6 +5,7 @@ import numpy as np
 
 from logics.contour_line_detector import detectContourLine
 from logics.corner_detector import detectCornerWithFAST
+from logics.featuremap_converter import convertFeatureMap
 from models.line import Line
 from utils.logging_ import logger
 from utils.visualize.videoloader import VideoLoader
@@ -29,14 +30,18 @@ while True:
         break
 
     windowManager.imgshow(frame, 'original')
+    feature, overwrite, withmainline = convertFeatureMap(frame, 'hough')
+    windowManager.imgshow(feature, '2')
+    windowManager.imgshow(overwrite, '3')
+    windowManager.imgshow(withmainline , '4')
     # subtracked = subtractBackground(frame)
     # windowManager.imgshow(subtracked, 'subtracked')
-    corner = detectCornerWithFAST(frame)
+    # corner = detectCornerWithFAST(frame)
     # windowManager.imgshow(corner, 'corner')
     # corner = detectCornerWithShiTomasi(frame)
     # corner = detectCornerWithHarris(frame)
     # windowManager.imgshow(corner, 'surf')
-    contour = detectContourLine(frame)
+    # contour = detectContourLine(frame)
     # windowManager.imgshow(contour, 'contourvideo')
 
 

@@ -53,6 +53,8 @@ class WindowManager(Singleton):
         self.windowNames.append(name)
 
     def imgshow(self,img, windowName):
+        if img is None:
+            raise ValueError("image is None")
         img = cv2.resize(img, (self.width, self.height))
         if windowName in windowName: # check windowName is in Names
             cv2.imshow(windowName,img)

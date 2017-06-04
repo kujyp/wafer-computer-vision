@@ -1,6 +1,8 @@
 import cv2
 import math
 
+import numpy as np
+
 from utils.consts import VIDEO_RESOLUTION
 from utils.logging_ import logger
 
@@ -37,7 +39,8 @@ class Line():
 
     @classmethod
     def drawLines(cls, image, lines, color=(0, 0, 255)):
-        img = image[:]
+        # img = image[:]
+        img = np.copy(image)
         for line in lines:
             if len(line) == 1:
                 line = line[0]
