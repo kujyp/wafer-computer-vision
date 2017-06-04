@@ -1,13 +1,6 @@
-import cv2
-from math import asin, tan
-
-import numpy as np
-
-from logics.hough_line_detector import detectHoughLines
 from models.line import Line
 from utils.consts import VIDEO_RESOLUTION
 from utils.logging_ import logger
-from utils.visualize.windowmanager import WindowManager
 
 MINIMUM_POINTS_FOR_LINE = 3
 NUM_OF_DIRECTIONS = 2000

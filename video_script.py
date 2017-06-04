@@ -3,11 +3,8 @@ import time
 
 import numpy as np
 
-from logics.contour_line_detector import detectContourLine
-from logics.corner_detector import detectCornerWithFAST
-from logics.featuremap_converter import convertFeatureMap
+from logics.middleware.featuremap_converter import convertFeatureMap
 from models.line import Line
-from utils.logging_ import logger
 from utils.visualize.videoloader import VideoLoader
 from utils.visualize.windowmanager import WindowManager
 

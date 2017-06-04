@@ -1,5 +1,6 @@
-from logics.corner_detector import detectCornerWithFAST
-from logics.hough_line_detector import detectHoughLines
+
+from logics.feature.corner_detector import detectCornerWithFAST
+from logics.feature.hough_line_detector import detectHoughLines
 
 
 def convertFeatureMap(image, method="hough"):
