@@ -1,14 +1,17 @@
 import cv2
 import math
 
+from utils.consts import VIDEO_RESOLUTION
 from utils.logging_ import logger
 
 
 X = 0
 Y = 1
+LIMIT_BOUNDARY = (10/1920)
 
 class Line():
-    def __init__(self, st, ed, lim=(1920,1080)) -> None:
+    def __init__(self, st, ed,
+                 lim=(VIDEO_RESOLUTION['x'],VIDEO_RESOLUTION['y'])) -> None:
         super().__init__()
         if not(type(st) is tuple and type(ed) is tuple):
             raise ValueError("Invalid Argument")
@@ -30,6 +33,7 @@ class Line():
         self._baseorigin = None
         self._basedest = None
         self._direction = None
+        self._length = None
 
     @classmethod
     def drawLines(cls, image, lines, color=(0, 0, 255)):
@@ -38,10 +42,23 @@ class Line():
             if len(line) == 1:
                 line = line[0]
             x1, y1, x2, y2 = line
-            logger.debug("drawLines x1,y1,x2,y2={},{},{},{}".format(x1, y1, x2, y2))
+            x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+            # logger.debug("drawLines x1,y1,x2,y2={},{},{},{}".format(x1, y1, x2, y2))
             cv2.line(img, (x1, y1), (x2, y2), color, 2)
 
         return img
+
+    @property
+    def isBoundary(self):
+        if (self.baseorigin[X] > (self.lim[X] -
+                                     (self.lim[X] * LIMIT_BOUNDARY))) or (
+            self.baseorigin[X] < (self.lim[X] * LIMIT_BOUNDARY)):
+            return True
+        # if (self.baseorigin[Y] > (self.lim[Y] -
+        #                                   (self.lim[Y] * LIMIT_BOUNDARY))) or (
+        #                 self.baseorigin[Y] < (self.lim[Y] * LIMIT_BOUNDARY)):
+        #     return True
+        return False
 
     @property
     def baseorigin(self):
@@ -128,12 +145,12 @@ class Line():
             deltay = self.ed[Y] - self.st[Y]
 
             if deltax == 0:
-                direction = (0, deltay)
+                direction = (0.0, 1.0)
             else:
                 if abs(deltax) > abs(deltay):
-                    direction = (1, deltay / deltax)
+                    direction = (1.0, deltay / deltax)
                 else:
-                    direction = (deltax / deltay, 1)
+                    direction = (deltax / deltay, 1.0)
 
             # logger.debug("direction={}".format(direction))
             self._direction = direction
@@ -141,10 +158,17 @@ class Line():
 
     @property
     def cos(self):
-        deltax, deltay = self.x2 - self.x1, self.y2 - self.y1
-        length = (deltax ** 2 + deltay ** 2) ** (1 / 2)
-        cos = deltax / length
+        deltax = self.x2 - self.x1
+        cos = deltax / self.length
         return cos
+
+    @property
+    def length(self):
+        if self._length is None:
+            deltax, deltay = self.x2 - self.x1, self.y2 - self.y1
+            self._length = (deltax ** 2 + deltay ** 2) ** (1 / 2)
+
+        return self._length
 
     @property
     def x1(self):

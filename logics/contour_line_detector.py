@@ -5,20 +5,64 @@ import numpy as np
 
 from logics.hough_line_detector import detectHoughLines
 from models.line import Line
+from utils.consts import VIDEO_RESOLUTION
 from utils.logging_ import logger
 from utils.visualize.windowmanager import WindowManager
 
 MINIMUM_POINTS_FOR_LINE = 3
 NUM_OF_DIRECTIONS = 2000
 INF = 100000
+# VIDEO_RESOLUTION = {
+#     'y':1080,
+#     'x':1920,
+#     'color':3
+# }
+HORIZONTAL_DIRACTION = (1.0, 0.0)
+LINE_LIMITLENGTH = VIDEO_RESOLUTION['x'] / 40
 
 def detectContourLine(image):
-    mask, mainDirection = detectHoughLines(image)
-    WindowManager.getInstance().imgshow(mask,'surf')
+    mask, mainline = detectHoughLines(image)
+    # WindowManager.getInstance().imgshow(mask, 'surf')
     # lines = findMainLines(mask, mainDirection)
     # mask = Line.drawLines(image, lines)
 
     return mask
+
+def findMainLines(lines, maindirectionline):
+    lineLengths = dict()
+    lineAsclass = dict()
+    lineCnt = dict()
+    maindir = maindirectionline.direction
+    for idx, line in enumerate(lines):
+        x1, y1, x2, y2 = line[0]
+        line_ = Line((x1, y1), (x2, y2))
+        if maindir == line_.direction:
+            baseorigin = line_.baseorigin
+            length = line_.length
+            if line_.isBoundary:
+                logger.debug("LIMITED ISBOUNDARY baseorigin={}, length={}".format(baseorigin, length))
+                continue
+            # if length > LINE_LIMITLENGTH:
+            #     logger.debug("LIMITED LENGTH baseorigin={}, length={}".format(baseorigin, length))
+            else:
+                if baseorigin in lineLengths:
+                    lineLengths[baseorigin] += length
+                    lineCnt[baseorigin] += 1
+                else:
+                    lineLengths[baseorigin] = length
+                    lineAsclass[baseorigin] = line_
+                    lineCnt[baseorigin] = 1
+        else:
+            pass
+
+    maxlength = -INF
+    mainline = None
+    for key, length in lineLengths.items():
+        if length > maxlength:
+            maxlength = length
+            mainline = lineAsclass[key]
+
+    return mainline
 
 # def findMainLines(image, direction):
 #     img = image[:]
@@ -66,38 +110,51 @@ def detectContourLine(image):
 
 
 def findMainDirectionByLines(lines):
-    sins = []
+    lineLengths = dict()
+    lineAsclass = dict()
     for idx, line in enumerate(lines):
         x1, y1, x2, y2 = line[0]
-        deltax, deltay = x2-x1, y2-y1
-        length = (deltax**2 + deltay**2)**(1/2)
-        sin = deltay / length
-
-        # logger.debug("idx={}, deltay={}, deltax={}, sin={}, length={}".format(idx, deltay, deltax, sin,length))
-        sins.append(sin)
-
-    hist, bin_edges = np.histogram(sins, bins=NUM_OF_DIRECTIONS)
-    hist, bin_edges= list(hist), list(bin_edges)
-    if bin_edges[0] == -1.0:
-        if bin_edges[-1] == 1.0:
-            hist[-1] += hist[0]
+        line_ = Line((x1,y1), (x2,y2))
+        direction = line_.direction
+        if direction in lineLengths:
+            lineLengths[direction] += line_.length
         else:
-            hist.append(hist[0])
-            bin_edges.append(1.0)
-        bin_edges.__delitem__(0)
-        hist.__delitem__(0)
+            lineLengths[direction] = line_.length
+            lineAsclass[direction] = line_
+
+    maxlength = -INF
+    mainline = None
+    for direction, length in lineLengths.items():
+        if direction == HORIZONTAL_DIRACTION:
+            logger.debug("skip HORIZONTAL_DIRACTION")
+            continue
+
+        if length > maxlength:
+            maxlength = length
+            mainline = lineAsclass[direction]
+
+    # hist, bin_edges = np.histogram(sins, bins=NUM_OF_DIRECTIONS)
+    # hist, bin_edges= list(hist), list(bin_edges)
+    # if bin_edges[0] == -1.0:
+    #     if bin_edges[-1] == 1.0:
+    #         hist[-1] += hist[0]
+    #     else:
+    #         hist.append(hist[0])
+    #         bin_edges.append(1.0)
+    #     bin_edges.__delitem__(0)
+    #     hist.__delitem__(0)
 
     # logger.debug("hist={}".format(hist))
     # logger.debug("bin_edges={}".format(bin_edges))
-    maximum, idx = findMax(hist)
+    # maximum, idx = findMax(hist)
     # logger.debug("Main direction sin={}-{}, maximum={}, idx={}".format(bin_edges[idx], bin_edges[idx+1], maximum, idx))
-    mainDirection = bin_edges[idx+1]
+    # mainDirection = bin_edges[idx+1]
     # import matplotlib.pyplot as plt
     # plt.hist(hist,bin_edges)  # plt.hist passes it's arguments to np.histogram
     # plt.title("Histogram with 'auto' bins")
     # plt.show()
 
-    return mainDirection
+    return mainline
 
 def findMax(arr):
     max = -INF
