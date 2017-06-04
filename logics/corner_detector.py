@@ -13,14 +13,14 @@ def detectCornerWithFAST(image):
     kp = fast.detect(img, None)
     img2 = cv2.drawKeypoints(img, kp, None, color=(255, 0, 0))
     # Print all default params
-    logger.debug("Threshold: {}".format(fast.getThreshold()))
-    logger.debug("nonmaxSuppression: {}".format(fast.getNonmaxSuppression()))
-    logger.debug("neighborhood: {}".format(fast.getType()))
-    logger.debug("Total Keypoints with nonmaxSuppression: {}".format(len(kp)))
+    # logger.debug("Threshold: {}".format(fast.getThreshold()))
+    # logger.debug("nonmaxSuppression: {}".format(fast.getNonmaxSuppression()))
+    # logger.debug("neighborhood: {}".format(fast.getType()))
+    # logger.debug("Total Keypoints with nonmaxSuppression: {}".format(len(kp)))
     # Disable nonmaxSuppression
     fast.setNonmaxSuppression(0)
     kp = fast.detect(img, None)
-    logger.debug("Total Keypoints without nonmaxSuppression: {}".format(len(kp)))
+    # logger.debug("Total Keypoints without nonmaxSuppression: {}".format(len(kp)))
     img3 = cv2.drawKeypoints(img, kp, None, color=(255, 0, 0))
     # return img2
     return img3

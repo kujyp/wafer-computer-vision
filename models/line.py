@@ -27,12 +27,17 @@ class Line():
                 self.ed = temp
         self.curpoint = self.st
         self.lim = lim
+        self._baseorigin = None
+        self._basedest = None
+        self._direction = None
 
     @classmethod
     def drawLines(cls, image, lines, color=(0, 0, 255)):
         img = image[:]
         for line in lines:
-            x1, y1, x2, y2 = line[0]
+            if len(line) == 1:
+                line = line[0]
+            x1, y1, x2, y2 = line
             logger.debug("drawLines x1,y1,x2,y2={},{},{},{}".format(x1, y1, x2, y2))
             cv2.line(img, (x1, y1), (x2, y2), color, 2)
 
@@ -40,29 +45,54 @@ class Line():
 
     @property
     def baseorigin(self):
-        def _isValidAxis(point, lim):
-            x, y = point[X], point[Y]
-            xlim, ylim = lim[X], lim[Y]
+        if self._baseorigin is None:
+            while True:
+                prevpoint = self.prevpoint_asint
+                # logger.debug("prevpoint={}".format(prevpoint))
+                # logger.debug("curpoint={}".format(self.curpoint))
+                if not self._isValidAxis(prevpoint, self.lim):
+                    break
 
-            result = True
-            if not (x >= 0 and x < xlim):
-                result = False
-            if not (y >= 0 and y < ylim):
-                result = False
-            return result
+            nextpoint = self.nextpoint_asint
+            # logger.debug("nextpoint={}".format(nextpoint))
+            # logger.debug("curpoint={}".format(self.curpoint))
+            self._baseorigin = nextpoint
 
-        while True:
+        return self._baseorigin
+
+    def _isValidAxis(self, point, lim):
+        x, y = point[X], point[Y]
+        xlim, ylim = lim[X], lim[Y]
+
+        result = True
+        if not (x >= 0 and x < xlim):
+            result = False
+        if not (y >= 0 and y < ylim):
+            result = False
+        return result
+
+    @property
+    def baseline(self):
+        x1, y1 = self.baseorigin
+        x2, y2 = self.basedest
+        return [(x1,y1,x2,y2)]
+
+    @property
+    def basedest(self):
+        if self._basedest is None:
+            while True:
+                nextpoint = self.nextpoint_asint
+                # logger.debug("nextpoint={}".format(nextpoint))
+                # logger.debug("curpoint={}".format(self.curpoint))
+                if not self._isValidAxis(nextpoint, self.lim):
+                    break
+
             prevpoint = self.prevpoint_asint
-            logger.debug("prevpoint={}".format(prevpoint))
-            logger.debug("curpoint={}".format(self.curpoint))
-            if not _isValidAxis(prevpoint, self.lim):
-                break
+            # logger.debug("prevpoint={}".format(prevpoint ))
+            # logger.debug("curpoint={}".format(self.curpoint))
+            self._basedest = prevpoint
 
-        nextpoint = self.nextpoint_asint
-        logger.debug("prevpoint={}".format(nextpoint))
-        logger.debug("curpoint={}".format(self.curpoint))
-        return nextpoint
-
+        return self._basedest
 
     @property
     def prevpoint(self):
@@ -93,19 +123,21 @@ class Line():
 
     @property
     def direction(self):
-        deltax = self.ed[X] - self.st[X]
-        deltay = self.ed[Y] - self.st[Y]
+        if self._direction is None:
+            deltax = self.ed[X] - self.st[X]
+            deltay = self.ed[Y] - self.st[Y]
 
-        if deltax == 0:
-            direction = (0, deltay)
-        else:
-            if abs(deltax) > abs(deltay):
-                direction = (1, deltay / deltax)
+            if deltax == 0:
+                direction = (0, deltay)
             else:
-                direction = (deltax / deltay, 1)
+                if abs(deltax) > abs(deltay):
+                    direction = (1, deltay / deltax)
+                else:
+                    direction = (deltax / deltay, 1)
 
-        logger.debug("direction={}".format(direction))
-        return direction
+            # logger.debug("direction={}".format(direction))
+            self._direction = direction
+        return self._direction
 
     @property
     def cos(self):

@@ -9,7 +9,7 @@ def detectHoughLines(image):
     img = image[:]
     img = cv2.Canny(img, 50,150)
     lines = cv2.HoughLinesP(img, 1,np.pi/180,80,30,10)
-    logger.debug("lines number={}".format(len(lines)))
+    # logger.debug("lines number={}".format(len(lines)))
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
     from logics.contour_line_detector import findMainDirectionByLines
     mainDirection = findMainDirectionByLines(lines)
