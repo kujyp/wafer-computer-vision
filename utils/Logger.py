@@ -1,6 +1,6 @@
 import logging
 
-from src_0602.Singleton import Singleton
+from utils.base.Singleton import Singleton
 
 
 class Logger(Singleton):

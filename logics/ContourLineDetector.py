@@ -1,14 +1,12 @@
 import cv2
-
-import logging
-import numpy as np
 from math import asin, tan
 
-from src_0602.WindowManager import WindowManager
-from src_0602.HoughLineDetector import detectHoughLines
+import numpy as np
 from src_0602.LineDrawer import drawLines
 from src_0602.Logger import logger
 
+from logics.HoughLineDetector import detectHoughLines
+from utils.visualize.WindowManager import WindowManager
 
 MINIMUM_POINTS_FOR_LINE = 3
 NUM_OF_DIRECTIONS = 2000

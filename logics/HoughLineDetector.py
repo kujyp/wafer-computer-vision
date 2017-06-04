@@ -2,7 +2,7 @@ import cv2
 
 import numpy as np
 
-from src_0602.Logger import logger
+from utils.Logger import logger
 
 
 def detectHoughLines(image):
@@ -11,7 +11,7 @@ def detectHoughLines(image):
     lines = cv2.HoughLinesP(img, 1,np.pi/180,80,30,10)
     logger.debug("lines number={}".format(len(lines)))
     img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
-    from src_0602.ContourLineDetector import findMainDirectionByLines
+    from logics.ContourLineDetector import findMainDirectionByLines
     mainDirection = findMainDirectionByLines(lines)
     mask = np.zeros(img.shape)
     for line in lines:

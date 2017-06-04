@@ -1,6 +1,6 @@
 import cv2
 
-from src_0602.Logger import logger
+from utils.Logger import logger
 
 
 def drawLines(image, lines, color=(0, 0, 255)):

@@ -1,8 +1,6 @@
 import cv2
-import types
 
-from src_0602.Singleton import Singleton
-
+from utils.base.Singleton import Singleton
 
 FULL_SCREEN_WIDTH = 959*2
 FULL_SCREEN_HEIGHT = 1000
