@@ -2,8 +2,11 @@ import cv2
 
 from utils.base.singleton import Singleton
 
-FULL_SCREEN_WIDTH = 959*2
-FULL_SCREEN_HEIGHT = 1000
+FULL_SCREEN_WIDTH = 800
+FULL_SCREEN_HEIGHT = 950
+# FULL_SCREEN_WIDTH = 959*2
+# FULL_SCREEN_HEIGHT = 1000
+NUMOFCOLS = 2
 
 class WindowManager(Singleton):
     def __init__(self) -> None:
@@ -25,13 +28,25 @@ class WindowManager(Singleton):
 
         self.showWindows()
 
+    # def showWindows(self):
+    #     self.width = int(FULL_SCREEN_WIDTH / self.numofWindows)
+    #     self.height = int(FULL_SCREEN_HEIGHT)
+    #     for idx, name in enumerate(self.windowNames):
+    #         cv2.namedWindow(name, cv2.WINDOW_KEEPRATIO)
+    #         cv2.resizeWindow(name, self.width, self.height)
+    #         cv2.moveWindow(name, self.width * idx, 0)
+
     def showWindows(self):
-        self.width = int(FULL_SCREEN_WIDTH / self.numofWindows)
-        self.height = int(FULL_SCREEN_HEIGHT)
+        numofCols = NUMOFCOLS
+        numofRows = self.numofWindows / numofCols
+        self.width = int(FULL_SCREEN_WIDTH / numofCols)
+        self.height = int(FULL_SCREEN_HEIGHT / numofRows)
         for idx, name in enumerate(self.windowNames):
             cv2.namedWindow(name, cv2.WINDOW_KEEPRATIO)
             cv2.resizeWindow(name, self.width, self.height)
-            cv2.moveWindow(name, self.width * idx, 0)
+            colnum = int(idx % numofRows)
+            rownum = int(idx / numofRows)
+            cv2.moveWindow(name, self.width * colnum, self.height * rownum)
 
 
     def addWindowName(self, name):
