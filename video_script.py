@@ -1,11 +1,10 @@
 import cv2
 import time
 
-from src_0602.ContourLineDetector import detectContourLine
-from src_0602.VideoLoader import VideoLoader
-
-from logics.CornerDetector import detectCornerWithFAST
-from utils.visualize.WindowManager import WindowManager
+from logics.contour_line_detector import detectContourLine
+from logics.corner_detector import detectCornerWithFAST
+from utils.visualize.videoloader import VideoLoader
+from utils.visualize.windowmanager import WindowManager
 
 video = VideoLoader.getInstance()
 windowManager = WindowManager.getInstance()

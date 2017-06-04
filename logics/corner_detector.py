@@ -2,7 +2,7 @@ import cv2
 
 import numpy as np
 
-from utils.Logger import logger
+from utils.logging_ import logger
 
 
 def detectCornerWithFAST(image):

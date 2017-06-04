@@ -1,6 +1,6 @@
 import cv2
 
-from utils.Logger import logger
+from utils.logging_ import logger
 
 
 class Line():

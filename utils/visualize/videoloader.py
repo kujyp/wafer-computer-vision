@@ -2,9 +2,8 @@ import cv2
 import os
 import random
 
-from src_0602.Logger import logger
-
-from utils.base.Singleton import Singleton
+from utils.logging_ import logger
+from utils.base.singleton import Singleton
 
 
 class VideoLoader(Singleton):
