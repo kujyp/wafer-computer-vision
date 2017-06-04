@@ -2,10 +2,10 @@ import cv2
 from math import asin, tan
 
 import numpy as np
-from src_0602.LineDrawer import drawLines
-from src_0602.Logger import logger
 
 from logics.HoughLineDetector import detectHoughLines
+from models.Line import Line
+from utils.Logger import logger
 from utils.visualize.WindowManager import WindowManager
 
 MINIMUM_POINTS_FOR_LINE = 3
@@ -16,7 +16,7 @@ def detectContourLine(image):
     mask, mainDirection = detectHoughLines(image)
     WindowManager.getInstance().imgshow(mask,'surf')
     lines = findMainLines(mask, mainDirection)
-    mask = drawLines(image, lines)
+    mask = Line.drawLines(image, lines)
 
     return mask
 
