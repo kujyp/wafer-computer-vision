@@ -30,7 +30,8 @@ while True:
         break
 
     windowManager.imgshow(frame, 'original')
-    feature, overwrite, withmainline = convertFeatureMap(frame, 'hough')
+    # feature, overwrite, withmainline = convertFeatureMap(frame, 'hough')
+    feature, overwrite, withmainline = convertFeatureMap(frame, 'fast')
     windowManager.imgshow(feature, '2')
     windowManager.imgshow(overwrite, '3')
     windowManager.imgshow(withmainline , '4')

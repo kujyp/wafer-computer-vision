@@ -3,12 +3,11 @@ from logics.hough_line_detector import detectHoughLines
 
 
 def convertFeatureMap(image, method="hough"):
-    img = image[:]
     mask, overwrite, mainline = None, None, None
     if method == "hough":
-        mask, overwrite, mainline = detectHoughLines(img)
+        mask, overwrite, mainline = detectHoughLines(image)
     elif method == "fast":
-        mask = detectCornerWithFAST(img)
+        mask, overwrite, mainline = detectCornerWithFAST(image)
     elif method == "":
         pass
 

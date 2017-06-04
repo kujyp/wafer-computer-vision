@@ -1,6 +1,7 @@
 import cv2
 
 from utils.base.singleton import Singleton
+from utils.logging_ import logger
 
 FULL_SCREEN_WIDTH = 800
 FULL_SCREEN_HEIGHT = 950
@@ -54,7 +55,9 @@ class WindowManager(Singleton):
 
     def imgshow(self,img, windowName):
         if img is None:
-            raise ValueError("image is None")
+            logger.error("image is None")
+            return
+            # raise ValueError("image is None")
         img = cv2.resize(img, (self.width, self.height))
         if windowName in windowName: # check windowName is in Names
             cv2.imshow(windowName,img)

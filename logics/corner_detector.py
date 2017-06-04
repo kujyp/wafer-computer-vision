@@ -6,7 +6,7 @@ from utils.logging_ import logger
 
 
 def detectCornerWithFAST(image):
-    img = image[:]
+    img = np.copy(image)
     # Initiate FAST object with default values
     fast = cv2.FastFeatureDetector_create()
     # find and draw the keypoints
@@ -21,9 +21,11 @@ def detectCornerWithFAST(image):
     fast.setNonmaxSuppression(0)
     kp = fast.detect(img, None)
     # logger.debug("Total Keypoints without nonmaxSuppression: {}".format(len(kp)))
-    img3 = cv2.drawKeypoints(img, kp, None, color=(255, 0, 0))
+    mask = np.zeros(img.shape, dtype=np.uint8)
+    mask = cv2.drawKeypoints(mask, kp, None, color=(255, 0, 0))
+    overwrite = cv2.drawKeypoints(img, kp, None, color=(255, 0, 0))
     # return img2
-    return img3
+    return mask, overwrite, None
 
 def detectCornerWithShiTomasi(image):
     img = image[:]
