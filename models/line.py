@@ -39,7 +39,7 @@ class Line():
 
     @classmethod
     def drawLines(cls, image, lines, color=(0, 0, 255)):
-        # img = image[:]
+        # img = np.copy(image)
         img = np.copy(image)
         for line in lines:
             if len(line) == 1:

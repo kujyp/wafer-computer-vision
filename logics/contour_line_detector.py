@@ -65,7 +65,7 @@ def findMainLines(lines, maindirectionline):
     return mainline
 
 # def findMainLines(image, direction):
-#     img = image[:]
+#     img = np.copy(image)
 #     if len(img.shape) == 3:
 #         img = img.astype(np.float32)
 #         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)

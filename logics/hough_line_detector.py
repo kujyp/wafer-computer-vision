@@ -8,7 +8,7 @@ from utils.visualize.windowmanager import WindowManager
 
 
 def detectHoughLines(image):
-    img = image[:]
+    img = np.copy(image)
     img = cv2.Canny(img, 50,150)
     lines = cv2.HoughLinesP(img, 1,np.pi/180,80,30,10)
     # logger.debug("lines number={}".format(len(lines)))

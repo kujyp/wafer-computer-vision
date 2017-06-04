@@ -28,7 +28,7 @@ def detectCornerWithFAST(image):
     return mask, overwrite, None
 
 def detectCornerWithShiTomasi(image):
-    img = image[:]
+    img = np.copy(image)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     corners = cv2.goodFeaturesToTrack(gray, 25, 0.01, 10)
     corners = np.int0(corners)
@@ -38,7 +38,7 @@ def detectCornerWithShiTomasi(image):
     return img
 
 def detectCornerWithHarris(image):
-    img = image[:]
+    img = np.copy(image)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     # find Harris corners
     gray = np.float32(gray)
