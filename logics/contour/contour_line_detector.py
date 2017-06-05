@@ -32,7 +32,7 @@ def findMainLines(lines, maindirectionline):
         if maindir == line_.direction:
             baseorigin = line_.baseorigin
             length = line_.length
-            if line_.isBoundary:
+            if line_.isBoundary():
                 logger.debug("LIMITED ISBOUNDARY baseorigin={}, length={}".format(baseorigin, length))
                 continue
             # if length > LINE_LIMITLENGTH:

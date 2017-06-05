@@ -18,6 +18,6 @@ def detectHoughLines(image):
     mask = np.zeros(img.shape)
     maskwithlines = Line.drawLines(mask, lines)
     imagewithlines = Line.drawLines(image, lines)
-    withmainline = Line.drawLines(image, mainline.baseline)
+    # mainline = Line.drawLines(image, mainline.baseline)
 
-    return maskwithlines, imagewithlines, withmainline
+    return maskwithlines, imagewithlines, mainline

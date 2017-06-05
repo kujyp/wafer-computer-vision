@@ -28,12 +28,15 @@ while True:
         break
 
     windowManager.imgshow(frame, 'original')
-    feature, overwrite, withmainline = convertFeatureMap(frame, 'hough')
+    feature, overwrite, mainline = convertFeatureMap(frame, 'hough')
     # feature, overwrite, withmainline = convertFeatureMap(frame, 'fast')
-    feature, overwrite, withmainline = convertFeatureMap(frame, 'canny')
+    lines = mainline.boundaryLines
+    mainlineboundary = Line.drawLines(frame, lines)
+    feature, overwrite, mainline = convertFeatureMap(frame, 'canny')
+    Line.getLineWeight(feature, lines[0])
     windowManager.imgshow(feature, '2')
     windowManager.imgshow(overwrite, '3')
-    windowManager.imgshow(withmainline, '4')
+    windowManager.imgshow(mainlineboundary, '4')
     # subtracked = subtractBackground(frame)
     # windowManager.imgshow(subtracked, 'subtracked')
     # corner = detectCornerWithFAST(frame)

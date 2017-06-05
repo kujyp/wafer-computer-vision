@@ -10,6 +10,8 @@ from utils.logging_ import logger
 X = 0
 Y = 1
 LIMIT_BOUNDARY = (10/1920)
+LINE_BOUNDARY_RANGE = int(VIDEO_RESOLUTION['x'] * (250/1920))
+# LINE_BOUNDARY_RANGE = int(VIDEO_RESOLUTION['x'] * (1/1920))
 
 class Line():
     def __init__(self, st, ed,
@@ -38,24 +40,72 @@ class Line():
         self._length = None
 
     @classmethod
+    def getLineWeight(cls, image, line):
+        point_iter = []
+        point_iter.append(line.baseorigin)
+        while True:
+            nextpoint = line.nextpoint_asint
+            # logger.debug("nextpoint={}".format(prevpoint))
+            # logger.debug("curpoint={}".format(self.curpoint))
+            if not line._isValidAxis(nextpoint, line.lim):
+                break
+            point_iter.append(nextpoint)
+
+        for point in point_iter:
+            x, y = int(point[X]), int(point[Y])
+            logger.debug("point={}".format(image[x,y]))
+
+        pass
+
+    @property
+    def boundaryLines(self):
+        lines = []
+        (x1, y1) = self.baseorigin
+        (x2, y2) = self.basedest
+        if self.direction == (1.0, 0.0):
+            logger.warn("boundaryLines/direction is horizontal")
+            pass
+        else:
+            for iter in [LINE_BOUNDARY_RANGE, -LINE_BOUNDARY_RANGE]:
+                step = int(iter/abs(iter))
+                for i in range(0, iter, step):
+                    if step == -1 and i == 0:
+                        continue
+                    xp1 = x1+i
+                    xp2 = x2+i
+                    if self.isBoundary((xp1, 0)):
+                        break
+                    st = (xp1, y1)
+                    ed = (xp2, y2)
+                    lines.append(Line(st,ed))
+
+        return lines
+
+    @classmethod
     def drawLines(cls, image, lines, color=(0, 0, 255)):
         # img = np.copy(image)
         img = np.copy(image)
         for line in lines:
-            if len(line) == 1:
-                line = line[0]
-            x1, y1, x2, y2 = line
-            x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+            if type(line) == Line:
+                ori, dst = line.baseorigin, line.basedest
+            else:
+                if len(line) == 1:
+                    line = line[0]
+                x1, y1, x2, y2 = line
+                ori, dst = (x1, y1), (x2, y2)
             # logger.debug("drawLines x1,y1,x2,y2={},{},{},{}".format(x1, y1, x2, y2))
-            cv2.line(img, (x1, y1), (x2, y2), color, 2)
+            ori, dst = (int(ori[X]), int(ori[Y])), (int(dst[X]), int(dst[Y]))
+            cv2.line(img, ori, dst, color, 2)
 
         return img
 
-    @property
-    def isBoundary(self):
-        if (self.baseorigin[X] > (self.lim[X] -
-                                     (self.lim[X] * LIMIT_BOUNDARY))) or (
-            self.baseorigin[X] < (self.lim[X] * LIMIT_BOUNDARY)):
+    def isBoundary(self, axis=None):
+        if axis is None:
+            axis = self.baseorigin
+
+        if (axis[X] > (self.lim[X] -
+                           (self.lim[X] * LIMIT_BOUNDARY))) or (
+                    axis[X] < (self.lim[X] * LIMIT_BOUNDARY)):
             return True
         # if (self.baseorigin[Y] > (self.lim[Y] -
         #                                   (self.lim[Y] * LIMIT_BOUNDARY))) or (
