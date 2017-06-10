@@ -5,6 +5,7 @@ import numpy as np
 
 from logics.contour.contour_detector import detectContour
 from logics.middleware.featuremap_converter import convertFeatureMap
+from logics.region.InterestRegionFinder import findInterestRegion
 from models.line import Line
 from utils.visualize.videoloader import VideoLoader
 from utils.visualize.windowmanager import WindowManager
@@ -32,9 +33,25 @@ while True:
         break
 
     windowManager.imgshow(frame, 'UP_1')
-    feature = detectContour(frame)
 
-    windowManager.imgshow(feature, 'UP_2')
+    interest = findInterestRegion(frame)
+    windowManager.imgshow(interest, 'UP_2')
+
+    gradient_, overwrite, _ = convertFeatureMap(frame, 'gradient')
+    windowManager.imgshow(gradient_, 'DOWN_3')
+    canny_, overwrite, _ = convertFeatureMap(frame, 'canny')
+    windowManager.imgshow(canny_, 'UP_3')
+    fast_, overwrite, _ = convertFeatureMap(frame, 'fast')
+    windowManager.imgshow(fast_, 'UP_4')
+    feature, _, mainline = convertFeatureMap(canny_, 'hough')
+    windowManager.imgshow(feature, 'DOWN_1')
+    feature, _, mainline = convertFeatureMap(fast_, 'hough')
+    windowManager.imgshow(feature, 'DOWN_2')
+    feature, _, mainline = convertFeatureMap(gradient_, 'hough')
+    windowManager.imgshow(feature, 'DOWN_4')
+
+    # feature = detectContour(frame)
+
     # windowManager.imgshow(overwrite, '3')
     # windowManager.imgshow(mainlineboundary, '4')
     # subtracked = subtractBackground(frame)

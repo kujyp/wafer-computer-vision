@@ -7,6 +7,7 @@ from utils.logging_ import logger
 # FULL_SCREEN_HEIGHT = 950
 FULL_SCREEN_WIDTH = 959*2
 FULL_SCREEN_HEIGHT = 1000
+FIXED_BAR_HEIGHT = 40
 NUMOFCOLS = 4
 
 class WindowManager(Singleton):
@@ -42,12 +43,13 @@ class WindowManager(Singleton):
         numofRows = self.numofWindows / numofCols
         self.width = int(FULL_SCREEN_WIDTH / numofCols)
         self.height = int(FULL_SCREEN_HEIGHT / numofRows)
+        other_height = self.height + FIXED_BAR_HEIGHT
         for idx, name in enumerate(self.windowNames):
             cv2.namedWindow(name, cv2.WINDOW_KEEPRATIO)
             cv2.resizeWindow(name, self.width, self.height)
             colnum = int(idx % numofCols)
             rownum = int(idx / numofCols)
-            cv2.moveWindow(name, self.width * colnum, self.height * rownum)
+            cv2.moveWindow(name, self.width * colnum, other_height * rownum)
 
 
     def addWindowName(self, name):

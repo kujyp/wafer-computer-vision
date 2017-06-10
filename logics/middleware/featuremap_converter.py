@@ -12,8 +12,12 @@ def convertFeatureMap(image, method="hough"):
     elif method == "fast":
         mask, overwrite, mainline = detectCornerWithFAST(image)
     elif method == "canny":
+        # mask = gradient(image)
+        # overwrite = canny(image)
+        mask = canny(image)
+    elif method == "gradient":
         mask = gradient(image)
-        overwrite = canny(image)
+        # overwrite = canny(image)
         # mask = canny(image)
 
     return mask, overwrite, mainline
