@@ -61,5 +61,11 @@ class WindowManager(Singleton):
             return
             # raise ValueError("image is None")
         img = cv2.resize(img, (self.width, self.height))
-        if windowName in windowName: # check windowName is in Names
-            cv2.imshow(windowName,img)
+        if type(windowName) is int:
+            # logger.debug("windowName is int")
+            idx = windowName
+            cv2.imshow(self.windowNames[idx], img)
+        else:
+            # logger.debug("windowName is not int")
+            if windowName in self.windowNames: # check windowName is in Names
+                cv2.imshow(windowName,img)

@@ -24,3 +24,16 @@ def convertFeatureMap(image, method="hough"):
         # mask = canny(image)
 
     return mask, overwrite, mainline
+
+def convertFeatureMaps(image):
+    features = []
+    mask, overwrite, _ = convertFeatureMap(image, 'gradienty')
+    features.append(mask)
+
+    mask, overwrite, _ = convertFeatureMap(image, 'canny')
+    features.append(mask)
+
+    mask, overwrite, _ = convertFeatureMap(image, 'fast')
+    features.append(mask)
+
+    return features
