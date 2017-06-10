@@ -37,7 +37,7 @@ while True:
     interest = findInterestRegion(frame)
     windowManager.imgshow(interest, 'UP_2')
 
-    gradient_, overwrite, _ = convertFeatureMap(frame, 'gradient')
+    gradient_, overwrite, _ = convertFeatureMap(frame, 'gradienty')
     windowManager.imgshow(gradient_, 'DOWN_3')
     canny_, overwrite, _ = convertFeatureMap(frame, 'canny')
     windowManager.imgshow(canny_, 'UP_3')
