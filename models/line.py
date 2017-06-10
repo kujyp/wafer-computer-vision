@@ -11,7 +11,7 @@ X = 0
 Y = 1
 LIMIT_BOUNDARY = (10/1920)
 LINE_BOUNDARY_RANGE = int(VIDEO_RESOLUTION['x'] * (250/1920))
-# LINE_BOUNDARY_RANGE = int(VIDEO_RESOLUTION['x'] * (1/1920))
+# LINE_BOUNDARY_RANGE = int(VIDEO_RESOLUTION['x'] * (2/1920))
 
 class Line():
     def __init__(self, st, ed,
@@ -40,22 +40,31 @@ class Line():
         self._length = None
 
     @classmethod
-    def getLineWeight(cls, image, line):
-        point_iter = []
-        point_iter.append(line.baseorigin)
-        while True:
-            nextpoint = line.nextpoint_asint
-            # logger.debug("nextpoint={}".format(prevpoint))
-            # logger.debug("curpoint={}".format(self.curpoint))
-            if not line._isValidAxis(nextpoint, line.lim):
-                break
-            point_iter.append(nextpoint)
+    def getBaseLineWeight(cls, image, line):
+        point_iter = line.getBasePoints
+        weight = 0
 
         for point in point_iter:
             x, y = int(point[X]), int(point[Y])
-            logger.debug("point={}".format(image[x,y]))
+            weight += image[y,x]
+            # logger.debug("axis={}, point={}".format((x,y), image[x,y]))
 
-        pass
+        # logger.debug("weight={}".format(weight))
+        return weight
+
+    @property
+    def getBasePoints(self):
+        basePoints = []
+        self.curpoint = self.baseorigin
+        while True:
+            nextpoint = self.nextpoint_asint
+            # logger.debug("prevpoint={}".format(prevpoint))
+            # logger.debug("curpoint={}".format(self.curpoint))
+            if not self._isValidAxis(nextpoint, self.lim):
+                break
+            basePoints.append(nextpoint)
+
+        return basePoints
 
     @property
     def boundaryLines(self):
