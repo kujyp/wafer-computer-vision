@@ -26,14 +26,14 @@ def detectContour(image):
     contourLines = getContourLines(feature, mainline)
 
     st = 0
-    WindowManager.getInstance().imgshow(color, '2')
+    # WindowManager.getInstance().imgshow(color, '2')
     cv2.waitKey(1000)
     for i in range(NUMOFCONTOURLINES):
         st = st+i
         ed = st+1
         _lines = contourLines[st:ed]
         color = Line.drawLines(color, _lines)
-        WindowManager.getInstance().imgshow(color, '2')
+        # WindowManager.getInstance().imgshow(color, '2')
         second = 0.05
         millis = int(second*1000)
         cv2.waitKey(millis)

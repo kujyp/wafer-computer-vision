@@ -3,11 +3,11 @@ import cv2
 from utils.base.singleton import Singleton
 from utils.logging_ import logger
 
-FULL_SCREEN_WIDTH = 800
-FULL_SCREEN_HEIGHT = 950
-# FULL_SCREEN_WIDTH = 959*2
-# FULL_SCREEN_HEIGHT = 1000
-NUMOFCOLS = 2
+# FULL_SCREEN_WIDTH = 800
+# FULL_SCREEN_HEIGHT = 950
+FULL_SCREEN_WIDTH = 959*2
+FULL_SCREEN_HEIGHT = 1000
+NUMOFCOLS = 4
 
 class WindowManager(Singleton):
     def __init__(self) -> None:
@@ -45,8 +45,8 @@ class WindowManager(Singleton):
         for idx, name in enumerate(self.windowNames):
             cv2.namedWindow(name, cv2.WINDOW_KEEPRATIO)
             cv2.resizeWindow(name, self.width, self.height)
-            colnum = int(idx % numofRows)
-            rownum = int(idx / numofRows)
+            colnum = int(idx % numofCols)
+            rownum = int(idx / numofCols)
             cv2.moveWindow(name, self.width * colnum, self.height * rownum)
 
 

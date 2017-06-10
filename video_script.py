@@ -11,10 +11,14 @@ from utils.visualize.windowmanager import WindowManager
 
 video = VideoLoader.getInstance()
 windowManager = WindowManager.getInstance()
-windowManager.addWindow(['original',
-                         '2',
-                         '3',
-                         '4'])
+windowManager.addWindow(['UP_1',
+                         'UP_2',
+                         'UP_3',
+                         'UP_4',
+                         'DOWN_1',
+                         'DOWN_2',
+                         'DOWN_3',
+                         'DOWN_4'])
 
 a = Line((20,15), (40,20))
 mask = np.zeros((1080,1920,3))
@@ -27,10 +31,10 @@ while True:
     if frame is None:
         break
 
-    windowManager.imgshow(frame, 'original')
+    windowManager.imgshow(frame, 'UP_1')
     feature = detectContour(frame)
 
-    windowManager.imgshow(feature, '2')
+    windowManager.imgshow(feature, 'UP_2')
     # windowManager.imgshow(overwrite, '3')
     # windowManager.imgshow(mainlineboundary, '4')
     # subtracked = subtractBackground(frame)
