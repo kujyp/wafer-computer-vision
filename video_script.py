@@ -3,12 +3,12 @@ import time
 
 import numpy as np
 
-from logics.contour.contour_detector import detectContour
+from logics.contour.contour_detector import detectContour, findContour
 from logics.middleware.featuremap_converter import convertFeatureMap, convertFeatureMaps
 from logics.region.InterestRegionFinder import findInterestRegion
 from models.line import Line
 from utils.visualize.videoloader import VideoLoader
-from utils.visualize.windowmanager import WindowManager
+from utils.visualize.windowmanager import WindowManager, NUMOFCOLS
 
 video = VideoLoader.getInstance()
 windowManager = WindowManager.getInstance()
@@ -35,11 +35,18 @@ while True:
     windowManager.imgshow(frame, 'UP_1')
 
     interest = findInterestRegion(frame)
-    windowManager.imgshow(interest, 'UP_2')
+    windowManager.imgshow(interest, 'DOWN_1')
 
     features = convertFeatureMaps(frame)
     for idx, feature in enumerate(features):
         windowManager.imgshow(feature, 1+idx)
+
+    contours = []
+    for feature in features:
+        contours.append(findContour(feature))
+
+    for idx, contour in enumerate(contours):
+        windowManager.imgshow(contour, 1+NUMOFCOLS+idx)
 
     # feature, _, mainline = convertFeatureMap(canny_, 'hough')
     # windowManager.imgshow(feature, 'DOWN_1')
