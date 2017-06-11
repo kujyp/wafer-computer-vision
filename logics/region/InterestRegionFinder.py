@@ -4,12 +4,13 @@ import numpy as np
 
 def findInterestRegion(image):
     imshape = image.shape
-    xst, xed = 830, 1150 # Video4
+    xst, xed = 845, 1130 # Video4
     yst, yed = 0, imshape[0]
-    vertices = np.array([[(xst, yst), (xst, yed), (xed, yed), (xed, yst)]], dtype=np.int32)
+    vertices = np.array([[(xst-50, yst), (xst-50, yed), (xed+50, yed), (xed+50, yst)]], dtype=np.int32)
     masked = region_of_interest(image, vertices)
+    croped = crop_image(image, (xst,yst,xed,yed))
 
-    return masked
+    return masked,croped, (xst,yst, xed,yed)
 
 def region_of_interest(image, vertices):
     # defining a blank mask to start with
@@ -28,3 +29,8 @@ def region_of_interest(image, vertices):
     # returning the image only where mask pixels are nonzero
     masked_image = cv2.bitwise_and(image, mask)
     return masked_image
+
+def crop_image(image, xy):
+    copy = np.copy(image)
+    crop = copy[xy[1]:xy[3], xy[0]:xy[2]]
+    return crop

@@ -3,7 +3,7 @@ import time
 
 import numpy as np
 
-from logics.contour.contour_detector import detectContour, findContour
+from logics.contour.contour_detector import detectContour, findContour, findContourWithCv2, findContourWithFixedRange
 from logics.middleware.featuremap_converter import convertFeatureMap, convertFeatureMaps
 from logics.region.InterestRegionFinder import findInterestRegion
 from models.line import Line
@@ -35,16 +35,20 @@ while True:
 
     windowManager.imgshow(frame, 'UP_1')
 
-    interest = findInterestRegion(frame)
-    windowManager.imgshow(interest, 'DOWN_1')
+    interest, cropped, rng= findInterestRegion(frame)
+    interest_contour = findContourWithFixedRange(interest, rng)
+    # interest_contour = findContourWithCv2(interest)
+    windowManager.imgshow(interest_contour, 'DOWN_1')
 
-    features = convertFeatureMaps(frame)
+    features = convertFeatureMaps(interest)
     for idx, feature in enumerate(features):
         windowManager.imgshow(feature, 1+idx)
 
     contours = []
     for feature in features:
-        contours.append(findContour(feature))
+        # contours.append(findContourWithCv2(feature))
+        contours.append(findContourWithFixedRange(feature, rng))
+        # contours.append(findContour(feature))
 
     for idx, contour in enumerate(contours):
         windowManager.imgshow(contour, 1+NUMOFCOLS+idx)
