@@ -7,7 +7,7 @@ from utils.base.singleton import Singleton
 
 
 class VideoLoader(Singleton):
-    NUM_SKIP_FRAMES = 10
+    NUM_SKIP_FRAMES = 30
 
     def __init__(self) -> None:
         super().__init__()

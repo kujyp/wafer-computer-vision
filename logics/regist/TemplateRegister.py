@@ -1,5 +1,10 @@
 import cv2
 
+import numpy as np
+
+TEXT_X_MARGIN = 50
+TEXT_FONTSIZE = 2
+TEXT_LINEWIDTH = 4
 
 def regist(img, template):
     w, h = template.shape[1::-1]
@@ -28,3 +33,24 @@ def regist(img, template):
 def findDelta(img, template):
     normal_delta_x = (regist(img, template))
     return normal_delta_x
+
+def drawNormalRectangle(image, seg):
+    copy = np.copy(image)
+    templatex = 845
+    xst, xed = templatex, templatex+(1130-845) # Video4 Normal
+    yst, yed = 0, image.shape[0]
+
+    delta = seg - templatex
+
+    cv2.rectangle(copy, (xst, yst), (xed, yed), (255, 0, 0), 3)
+    cv2.putText(copy, "xst,yst={},{}".format(xst, yst+100), (xed + TEXT_X_MARGIN, yst + 50+100),
+                cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (255, 0, 0), TEXT_LINEWIDTH, cv2.LINE_AA)
+    cv2.putText(copy, "xed,yed={},{}".format(xed, yed+100), (xed + TEXT_X_MARGIN, yst + 100+100),
+                cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (255, 0, 0), TEXT_LINEWIDTH, cv2.LINE_AA)
+
+    cv2.putText(copy, "delta={}".format(delta), (xed + TEXT_X_MARGIN, yst + 100 + 150),
+                cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (0, 0, 255), TEXT_LINEWIDTH, cv2.LINE_AA)
+
+    return copy
+
+

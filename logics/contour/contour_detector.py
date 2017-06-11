@@ -6,6 +6,7 @@ import time
 
 from logics.middleware.featuremap_converter import convertFeatureMap
 from logics.region.InterestRegionFinder import region_of_interest
+from logics.regist.TemplateRegister import TEXT_X_MARGIN, TEXT_FONTSIZE, TEXT_LINEWIDTH
 from models.line import Line, X, Y
 from utils.logging_ import logger
 from utils.visualize.windowmanager import WindowManager
@@ -123,10 +124,10 @@ def findContourWithFixedRange(image, rng):
     xst, xed = rng[0], rng[2]
     yst, yed = rng[1], rng[3]
     cv2.rectangle(copy, (xst, yst), (xed, yed), (0, 255, 0), 3)
-    cv2.putText(copy, "xst,yst={},{}".format(xst, yst), (xed + 10, yst + 50),
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2, cv2.LINE_AA)
-    cv2.putText(copy, "xed,yed={},{}".format(xed, yed), (xed + 10, yst + 100),
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2, cv2.LINE_AA)
+    cv2.putText(copy, "xst,yst={},{}".format(xst, yst), (xed + TEXT_X_MARGIN, yst + 50),
+                cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (0, 255, 0), TEXT_LINEWIDTH, cv2.LINE_AA)
+    cv2.putText(copy, "xed,yed={},{}".format(xed, yed), (xed + TEXT_X_MARGIN, yst + 100),
+                cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (0, 255, 0), TEXT_LINEWIDTH, cv2.LINE_AA)
 
     return copy
 
