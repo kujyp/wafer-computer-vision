@@ -11,7 +11,7 @@ from utils.visualize.videoloader import VideoLoader
 from utils.visualize.windowmanager import WindowManager, NUMOFCOLS
 
 video = VideoLoader.getInstance()
-video.load(0)
+video.load(4) # 4 : ch01 normal ch1
 windowManager = WindowManager.getInstance()
 windowManager.addWindow(['UP_1',
                          'UP_2',

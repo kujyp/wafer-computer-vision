@@ -106,6 +106,10 @@ def findContour(img):
         vertices = np.array([[(xst, yst), (xed, yst), (xed, yed), (xst, yed)]], dtype=np.int32)
         masked = region_of_interest(copy, vertices)
         cv2.rectangle(color, (xst,yst), (xed,yed), (0,255,0), 3)
+        cv2.putText(color,"xst,yst={},{}".format(xst,yst),(xed+10,yst+50),
+                    cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2,cv2.LINE_AA)
+        cv2.putText(color, "xed,yed={},{}".format(xed, yed), (xed + 10, yst + 100),
+                    cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0), 2, cv2.LINE_AA)
         # cv2.drawContours(color, [(xst, yst), (xed, yst), (xed, yed), (xst, yed)], 3, (0,255,0), 3)
     # findCountour활용하기
 

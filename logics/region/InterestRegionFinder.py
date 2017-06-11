@@ -4,7 +4,9 @@ import numpy as np
 
 def findInterestRegion(image):
     imshape = image.shape
-    vertices = np.array([[(0, imshape[0]), (450, 320), (500, 320), (imshape[1], imshape[0])]], dtype=np.int32)
+    xst, xed = 830, 1150 # Video4
+    yst, yed = 0, imshape[0]
+    vertices = np.array([[(xst, yst), (xst, yed), (xed, yed), (xed, yst)]], dtype=np.int32)
     masked = region_of_interest(image, vertices)
 
     return masked
