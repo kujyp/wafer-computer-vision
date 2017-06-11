@@ -101,7 +101,7 @@ def findContour(img):
     for item in sortedsum[0:NRESULT]:
         xst, xed = item[0]
         sum_ = item[1]
-        logger.debug("xst, xed={},{}, divsum={}".format(xst, xed, sum_))
+        # logger.debug("xst, xed={},{}, divsum={}".format(xst, xed, sum_))
 
         vertices = np.array([[(xst, yst), (xed, yst), (xed, yed), (xst, yed)]], dtype=np.int32)
         masked = region_of_interest(copy, vertices)
