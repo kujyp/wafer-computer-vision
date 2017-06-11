@@ -6,7 +6,9 @@ import numpy as np
 from logics.contour.contour_detector import detectContour, findContour, findContourWithCv2, findContourWithFixedRange
 from logics.middleware.featuremap_converter import convertFeatureMap, convertFeatureMaps
 from logics.region.InterestRegionFinder import findInterestRegion
+from logics.regist.TemplateRegister import findDelta
 from models.line import Line
+from utils.logging_ import logger
 from utils.visualize.videoloader import VideoLoader
 from utils.visualize.windowmanager import WindowManager, NUMOFCOLS
 
@@ -36,6 +38,9 @@ while True:
     windowManager.imgshow(frame, 'UP_1')
 
     interest, cropped, rng= findInterestRegion(frame)
+    # filename = 'data/cropped.png'
+    # cv2.imwrite(filename,cropped)
+    logger.debug("findDelta={}".format(findDelta(frame, cropped)))
     interest_contour = findContourWithFixedRange(interest, rng)
     # interest_contour = findContourWithCv2(interest)
     windowManager.imgshow(interest_contour, 'DOWN_1')

@@ -1,10 +1,17 @@
 import cv2
 import numpy as np
 
+from logics.regist.TemplateRegister import findDelta
+
 
 def findInterestRegion(image):
     imshape = image.shape
-    xst, xed = 845, 1130 # Video4
+
+    filename="data/cropped.png"
+    cropped = cv2.imread(filename)
+    deltax = findDelta(image, cropped)
+    xst, xed = deltax, deltax+(1130-845)
+    # xst, xed = 845, 1130 # Video4
     yst, yed = 0, imshape[0]
     vertices = np.array([[(xst-50, yst), (xst-50, yed), (xed+50, yed), (xed+50, yst)]], dtype=np.int32)
     masked = region_of_interest(image, vertices)
