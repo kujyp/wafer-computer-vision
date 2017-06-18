@@ -3,7 +3,7 @@ import cv2
 from utils.base.singleton import Singleton
 from utils.logging_ import logger
 
-# FULL_SCREEN_WIDTH = 800
+# FULL_SCREEN_WIDTH = 1000
 # FULL_SCREEN_HEIGHT = 950
 FULL_SCREEN_WIDTH = 959*2
 FULL_SCREEN_HEIGHT = 1000

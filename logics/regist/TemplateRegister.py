@@ -2,9 +2,15 @@ import cv2
 
 import numpy as np
 
+from config import Status
+from utils.logging_ import logger
+
 TEXT_X_MARGIN = 50
-TEXT_FONTSIZE = 2
-TEXT_LINEWIDTH = 4
+TEXT_FONTSIZE = 1.5
+TEXT_LINEWIDTH = 3
+TEXT_LINESPACING = 50
+TEXT_TOPLINESPACING = 100
+
 
 def regist(img, template):
     w, h = template.shape[1::-1]
@@ -43,14 +49,35 @@ def drawNormalRectangle(image, seg):
     delta = seg - templatex
 
     cv2.rectangle(copy, (xst, yst), (xed, yed), (255, 0, 0), 3)
-    cv2.putText(copy, "xst,yst={},{}".format(xst, yst+100), (xed + TEXT_X_MARGIN, yst + 50+100),
+    cv2.putText(copy, "Normal", (xed + TEXT_X_MARGIN, yst + TEXT_LINESPACING+TEXT_TOPLINESPACING),
                 cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (255, 0, 0), TEXT_LINEWIDTH, cv2.LINE_AA)
-    cv2.putText(copy, "xed,yed={},{}".format(xed, yed+100), (xed + TEXT_X_MARGIN, yst + 100+100),
+    cv2.putText(copy, "x=[{}-{}]".format(xst, xed), (xed + TEXT_X_MARGIN, yst + TEXT_LINESPACING*2+TEXT_TOPLINESPACING),
                 cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (255, 0, 0), TEXT_LINEWIDTH, cv2.LINE_AA)
 
-    cv2.putText(copy, "delta={}".format(delta), (xed + TEXT_X_MARGIN, yst + 100 + 150),
+    cv2.putText(copy, "delta={}".format(delta), (xed + TEXT_X_MARGIN, yst + TEXT_LINESPACING*3 + TEXT_TOPLINESPACING),
                 cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (0, 0, 255), TEXT_LINEWIDTH, cv2.LINE_AA)
 
+    result_msg = ""
+    if deltaStatus(delta) == Status.NORMAL:
+        result_msg = "On Normal range."
+    elif deltaStatus(delta) == Status.RIGHT:
+        result_msg = "Out of range(RIGHT)"
+    elif deltaStatus(delta) == Status.LEFT:
+        result_msg = "Out of range(LEFT)"
+
+    cv2.putText(copy, result_msg, (xed + TEXT_X_MARGIN, yst + TEXT_LINESPACING*4+ TEXT_TOPLINESPACING),
+                cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (0, 0, 255), TEXT_LINEWIDTH, cv2.LINE_AA)
+
+    logger.info("delta={}, result={}".format(delta,result_msg))
+
     return copy
+
+def deltaStatus(delta):
+    if delta > 20:
+        return Status.RIGHT
+    elif delta < -20:
+        return Status.LEFT
+
+    return Status.NORMAL
 
 

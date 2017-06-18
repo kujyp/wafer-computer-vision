@@ -124,9 +124,9 @@ def findContourWithFixedRange(image, rng):
     xst, xed = rng[0], rng[2]
     yst, yed = rng[1], rng[3]
     cv2.rectangle(copy, (xst, yst), (xed, yed), (0, 255, 0), 3)
-    cv2.putText(copy, "xst,yst={},{}".format(xst, yst), (xed + TEXT_X_MARGIN, yst + 50),
+    cv2.putText(copy, "Current", (xed + TEXT_X_MARGIN, yst + 50),
                 cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (0, 255, 0), TEXT_LINEWIDTH, cv2.LINE_AA)
-    cv2.putText(copy, "xed,yed={},{}".format(xed, yed), (xed + TEXT_X_MARGIN, yst + 100),
+    cv2.putText(copy, "x=[{}-{}]".format(xst, xed), (xed + TEXT_X_MARGIN, yst + 100),
                 cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (0, 255, 0), TEXT_LINEWIDTH, cv2.LINE_AA)
 
     return copy
