@@ -5,12 +5,13 @@ import numpy as np
 
 from logics.contour.contour_detector import detectContour, findContour
 from logics.middleware.featuremap_converter import convertFeatureMap, convertFeatureMaps
-from logics.region.InterestRegionFinder import findInterestRegion
+from logics.region.InterestRegionFinder import findInterestRegion, drawNormalRectangle
 from models.line import Line
 from utils.visualize.videoloader import VideoLoader
 from utils.visualize.windowmanager import WindowManager, NUMOFCOLS
 
 video = VideoLoader.getInstance()
+video.load(5)
 windowManager = WindowManager.getInstance()
 windowManager.addWindow(['UP_1',
                          'UP_2',
@@ -26,8 +27,9 @@ mask = np.zeros((1080,1920,3))
 # shape=(1080, 1920, 3)
 Line.drawLines(mask, a.baseline)
 # windowManager.imgshow(mask, 'original')
-
+i=0
 while True:
+    i += 1
     frame = video.next()
     if frame is None:
         break
@@ -35,6 +37,8 @@ while True:
     windowManager.imgshow(frame, 'UP_1')
 
     interest = findInterestRegion(frame)
+    if i > 10:
+        interest = drawNormalRectangle(interest)
     windowManager.imgshow(interest, 'DOWN_1')
 
     features = convertFeatureMaps(frame)
@@ -70,8 +74,8 @@ while True:
     # windowManager.imgshow(contour, 'contourvideo')
 
 
-    second = 1
-    time.sleep(second)
+    # second = 1
+    # time.sleep(second)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
