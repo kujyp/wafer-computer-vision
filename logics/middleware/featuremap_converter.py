@@ -1,7 +1,7 @@
 import cv2
 
 from logics.feature.corner_detector import detectCornerWithFAST
-from logics.feature.gradient_detector import gradienty, canny, gradientx, gradient
+from logics.feature.gradient_detector import gradient_y, canny, gradient_x, gradient
 from logics.feature.hough_line_detector import detectHoughLines
 
 
@@ -16,10 +16,10 @@ def convertFeatureMap(image, method="hough"):
         # overwrite = canny(image)
         mask = canny(image)
     elif method == "gradientx":
-        mask = gradientx(image)
+        mask = gradient_x(image)
 
     elif method == "gradienty":
-        mask = gradienty(image)
+        mask = gradient_y(image)
     elif method == "gradient":
         mask = gradient(image)
         # overwrite = canny(image)

@@ -2,14 +2,9 @@ import cv2
 
 import numpy as np
 
-from config import Status
-from utils.logging_ import logger
-
-TEXT_X_MARGIN = 50
-TEXT_FONTSIZE = 1.5
-TEXT_LINEWIDTH = 3
-TEXT_LINESPACING = 50
-TEXT_TOPLINESPACING = 100
+from config.config import Textdimens
+from config.consts import Status
+from utils.log.logging_ import logger
 
 
 def regist(img, template):
@@ -49,24 +44,47 @@ def drawNormalRectangle(image, seg):
     delta = seg - templatex
 
     cv2.rectangle(copy, (xst, yst), (xed, yed), (255, 0, 0), 3)
-    cv2.putText(copy, "Normal", (xed + TEXT_X_MARGIN, yst + TEXT_LINESPACING+TEXT_TOPLINESPACING),
-                cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (255, 0, 0), TEXT_LINEWIDTH, cv2.LINE_AA)
-    cv2.putText(copy, "x=[{}-{}]".format(xst, xed), (xed + TEXT_X_MARGIN, yst + TEXT_LINESPACING*2+TEXT_TOPLINESPACING),
-                cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (255, 0, 0), TEXT_LINEWIDTH, cv2.LINE_AA)
+    cv2.putText(copy,
+                "Normal",
+                (xed + Textdimens.TEXT_X_MARGIN, yst + Textdimens.TEXT_LINESPACING + Textdimens.TEXT_TOPLINESPACING),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                Textdimens.TEXT_FONTSIZE,
+                (255, 0, 0),
+                Textdimens.TEXT_LINEWIDTH,
+                cv2.LINE_AA)
+    cv2.putText(copy,
+                "x=[{}-{}]".format(xst, xed),
+                (xed + Textdimens.TEXT_X_MARGIN, yst + Textdimens.TEXT_LINESPACING * 2 + Textdimens.TEXT_TOPLINESPACING),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                Textdimens.TEXT_FONTSIZE,
+                (255, 0, 0),
+                Textdimens.TEXT_LINEWIDTH,
+                cv2.LINE_AA)
 
-    cv2.putText(copy, "delta={}".format(delta), (xed + TEXT_X_MARGIN, yst + TEXT_LINESPACING*3 + TEXT_TOPLINESPACING),
-                cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (0, 0, 255), TEXT_LINEWIDTH, cv2.LINE_AA)
+    cv2.putText(copy, "delta={}".format(delta),
+                (xed + Textdimens.TEXT_X_MARGIN, yst + Textdimens.TEXT_LINESPACING * 3 + Textdimens.TEXT_TOPLINESPACING),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                Textdimens.TEXT_FONTSIZE,
+                (0, 0, 255),
+                Textdimens.TEXT_LINEWIDTH,
+                cv2.LINE_AA)
 
     result_msg = ""
     if deltaStatus(delta) == Status.NORMAL:
         result_msg = "On Normal range."
-    elif deltaStatus(delta) == Status.RIGHT:
+    elif deltaStatus(delta) == Status.RIGHT_ABNORMAL:
         result_msg = "Out of range(RIGHT)"
-    elif deltaStatus(delta) == Status.LEFT:
+    elif deltaStatus(delta) == Status.LEFT_ABNORMAL:
         result_msg = "Out of range(LEFT)"
 
-    cv2.putText(copy, result_msg, (xed + TEXT_X_MARGIN, yst + TEXT_LINESPACING*4+ TEXT_TOPLINESPACING),
-                cv2.FONT_HERSHEY_SIMPLEX, TEXT_FONTSIZE, (0, 0, 255), TEXT_LINEWIDTH, cv2.LINE_AA)
+    cv2.putText(copy,
+                result_msg,
+                (xed + Textdimens.TEXT_X_MARGIN, yst + Textdimens.TEXT_LINESPACING * 4+ Textdimens.TEXT_TOPLINESPACING),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                Textdimens.TEXT_FONTSIZE,
+                (0, 0, 255),
+                Textdimens.TEXT_LINEWIDTH,
+                cv2.LINE_AA)
 
     logger.info("delta={}, result={}".format(delta,result_msg))
 
@@ -74,9 +92,9 @@ def drawNormalRectangle(image, seg):
 
 def deltaStatus(delta):
     if delta > 20:
-        return Status.RIGHT
+        return Status.RIGHT_ABNORMAL
     elif delta < -20:
-        return Status.LEFT
+        return Status.LEFT_ABNORMAL
 
     return Status.NORMAL
 
