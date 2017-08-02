@@ -2,7 +2,7 @@
 # contour_detector 아래 지운파일
 MINIMUM_POINTS_FOR_LINE = 3
 NUM_OF_DIRECTIONS = 2000
-INF = 100000
+INFINITY = 100000
 # VIDEO_RESOLUTION = {
 #     'y':1080,
 #     'x':1920,
@@ -20,6 +20,13 @@ class Status:
     NORMAL = 0
     LEFT_ABNORMAL = 1
     RIGHT_ABNORMAL = 2
+
+class Messages:
+    ON_RIGHT_ABNORMAL = "Out of range(RIGHT)"
+    ON_LEFT_ABNORMAL = "Out of range(LEFT)"
+    ON_NORMAL = "On Normal range."
+
+
 
 class Video_resolution:
         resolution_y = 1080

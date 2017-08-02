@@ -2,15 +2,16 @@ import cv2
 
 import numpy as np
 
-from config.config import Textdimens
+from config.config import Textdimens, Messages
 from config.consts import Status
+from models.calibration import Calibration
 from utils.log.logging_ import logger
 
 
 def regist(img, template):
     w, h = template.shape[1::-1]
 
-    #methods = ['cv2.TM_CCOEFF', 'cv2.TM_CCOEFF_NORMED', 'cv2.TM_CCORR',
+    # methods = ['cv2.TM_CCOEFF', 'cv2.TM_CCOEFF_NORMED', 'cv2.TM_CCORR',
     #       'cv2.TM_CCORR_NORMED', 'cv2.TM_SQDIFF', 'cv2.TM_SQDIFF_NORMED']
 
     meth = 'cv2.TM_CCOEFF_NORMED'
@@ -31,9 +32,12 @@ def regist(img, template):
 
     return top_left[0]
 
-def findDelta(img, template):
+def finddelta_withtemplate(img, template):
     normal_delta_x = (regist(img, template))
     return normal_delta_x
+
+def finddelta(img):
+    return finddelta_withtemplate(img, Calibration.getInstance().cropped_template)
 
 def drawNormalRectangle(image, seg):
     copy = np.copy(image)
@@ -71,11 +75,11 @@ def drawNormalRectangle(image, seg):
 
     result_msg = ""
     if deltaStatus(delta) == Status.NORMAL:
-        result_msg = "On Normal range."
+        result_msg = Messages.ON_NORMAL
     elif deltaStatus(delta) == Status.RIGHT_ABNORMAL:
-        result_msg = "Out of range(RIGHT)"
+        result_msg = Messages.ON_RIGHT_ABNORMAL
     elif deltaStatus(delta) == Status.LEFT_ABNORMAL:
-        result_msg = "Out of range(LEFT)"
+        result_msg = Messages.ON_LEFT_ABNORMAL
 
     cv2.putText(copy,
                 result_msg,
@@ -97,5 +101,3 @@ def deltaStatus(delta):
         return Status.LEFT_ABNORMAL
 
     return Status.NORMAL
-
-

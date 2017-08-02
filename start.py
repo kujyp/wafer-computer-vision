@@ -6,8 +6,9 @@ from config import config
 from config.consts import *
 from logics.contour.contour_detector import findContourWithFixedRange
 from logics.middleware.featuremap_converter import convertFeatureMaps
-from logics.region.InterestRegionFinder import findInterestRegion
-from logics.regist.TemplateRegister import findDelta, drawNormalRectangle, deltaStatus
+from logics.region.region_detector import detect_target_region
+from logics.regist.TemplateRegister import finddelta_withtemplate, drawNormalRectangle, deltaStatus, finddelta
+from models.calibration import Calibration
 from utils.visualize.sourceloader import SourceLoader
 from utils.visualize.videoloader import VideoLoader
 from utils.visualize.windowmanager import WindowManager, NUMOFCOLS
@@ -16,11 +17,13 @@ from utils.visualize.windowmanager import WindowManager, NUMOFCOLS
 # 초기화
 source = SourceLoader.getSource()
 windowManager = WindowManager.getInstance()
+calibration = Calibration.getInstance()
 
 # Calibration 안된경우에 Calibration 진행
-if False:
-    pass
-    # saveCalibration
+if calibration.isLoaded():
+    print("Calibration Loaded")
+else:
+    raise("Need to calibration")
 
 # 영상처리
 while True:
@@ -29,12 +32,12 @@ while True:
         break
 
     # 기둥 있는 영역 감지
-    detected = detectTargetRegion(origin)
+    detected, cropped, resized = detect_target_region(origin)
     # draw
     # show
 
     # 정상과의 차이 감지
-    delta = findDelta(detected)
+    delta = finddelta(detected)
     # draw
     # show
 
