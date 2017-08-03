@@ -28,16 +28,16 @@ class Messages:
 
 
 
-class Video_resolution:
+class VideoResolution:
         resolution_y = 1080
         resolution_x = 1920
         resolution_colordim = 3
 
-class Line_config:
+class LineConfig:
     X = 0
     Y = 1
     LIMIT_BOUNDARY = (10 / 1920)
-    LINE_BOUNDARY_RANGE = int(Video_resolution.resolution_x * (250.0 / 1920.0))
+    LINE_BOUNDARY_RANGE = int(VideoResolution.resolution_x * (250.0 / 1920.0))
 
 class color:
     pass

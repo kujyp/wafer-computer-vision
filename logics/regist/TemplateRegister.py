@@ -2,7 +2,7 @@ import cv2
 
 import numpy as np
 
-from config.config import Textdimens, Messages
+from config.config import Textdimens, Messages, StatusThreshold
 from config.consts import Status
 from models.calibration import Calibration
 from utils.log.logging_ import logger
@@ -11,13 +11,7 @@ from utils.log.logging_ import logger
 def regist(img, template):
     w, h = template.shape[1::-1]
 
-    # methods = ['cv2.TM_CCOEFF', 'cv2.TM_CCOEFF_NORMED', 'cv2.TM_CCORR',
-    #       'cv2.TM_CCORR_NORMED', 'cv2.TM_SQDIFF', 'cv2.TM_SQDIFF_NORMED']
-
     meth = 'cv2.TM_CCOEFF_NORMED'
-    #img1 = cv2.cvtColor(img1,cv2.COLOR_BGR2GRAY)
-    #template = cv2.cvtColor(template,cv2.COLOR_BGR2GRAY)
-    #for meth in methods:
     img = img.copy()
 
     method = eval(meth)
@@ -42,7 +36,7 @@ def finddelta(img):
 def drawNormalRectangle(image, seg):
     copy = np.copy(image)
     templatex = 845
-    xst, xed = templatex, templatex+(1130-845) # Video4 Normal
+    xst, xed = templatex, templatex + (1130-845) # Video4 Normal
     yst, yed = 0, image.shape[0]
 
     delta = seg - templatex
@@ -95,9 +89,9 @@ def drawNormalRectangle(image, seg):
     return copy
 
 def deltaStatus(delta):
-    if delta > 20:
+    if delta > StatusThreshold.THRESHOLD_IN_PIXEL:
         return Status.RIGHT_ABNORMAL
-    elif delta < -20:
+    elif delta < -StatusThreshold.THRESHOLD_IN_PIXEL:
         return Status.LEFT_ABNORMAL
 
     return Status.NORMAL

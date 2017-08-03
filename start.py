@@ -11,12 +11,12 @@ from logics.regist.TemplateRegister import finddelta_withtemplate, drawNormalRec
 from models.calibration import Calibration
 from utils.visualize.sourceloader import SourceLoader
 from utils.visualize.videoloader import VideoLoader
-from utils.visualize.windowmanager import WindowManager, NUMOFCOLS
+from utils.visualize.windowmanager import WindowManager
 
 
 # 초기화
 source = SourceLoader.getSource()
-windowManager = WindowManager.getInstance()
+window_manager = WindowManager.getInstance()
 calibration = Calibration.getInstance()
 
 # Calibration 안된경우에 Calibration 진행
@@ -32,9 +32,10 @@ while True:
         break
 
     # 기둥 있는 영역 감지
-    detected, cropped, resized = detect_target_region(origin)
-    # draw
-    # show
+    detected, cropped = detect_target_region(origin)
+    window_manager.imgshow(origin, 0)
+    window_manager.imgshow(detected, 1)
+    window_manager.showWindows()
 
     # 정상과의 차이 감지
     delta = finddelta(detected)
@@ -53,9 +54,8 @@ while True:
     # show
 
     # 딜레이
-    # second = 1
     if config.DELAY_TYPE == DelayTypes.TIME:
-        time.sleep(config.DELAY_TIME_INSECONDS)
+        cv2.waitKey(config.DELAY_TIME_INMILLIS)
     elif config.DELAY_TYPE == DelayTypes.KEYBOARDINTERRUPT:
         cv2.waitKey(0)
 

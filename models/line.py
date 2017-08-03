@@ -3,13 +3,13 @@ import math
 
 import numpy as np
 
-from config.consts import Video_resolution, Line_config
+from config.consts import VideoResolution, LineConfig
 from utils.log.logging_ import logger
 
 
 class Line():
     def __init__(self, st, ed,
-                 lim=(Video_resolution.resolution_x, Video_resolution.resolution_y)) -> None:
+                 lim=(VideoResolution.resolution_x, VideoResolution.resolution_y)) -> None:
         super().__init__()
         if not(type(st) is tuple and type(ed) is tuple):
             raise ValueError("Invalid Argument")
@@ -69,7 +69,7 @@ class Line():
             logger.warn("boundaryLines/direction is horizontal")
             pass
         else:
-            for iter in [Line_config.LINE_BOUNDARY_RANGE, -Line_config.LINE_BOUNDARY_RANGE]:
+            for iter in [LineConfig.LINE_BOUNDARY_RANGE, -LineConfig.LINE_BOUNDARY_RANGE]:
                 step = int(iter/abs(iter))
                 for i in range(0, iter, step):
                     if step == -1 and i == 0:

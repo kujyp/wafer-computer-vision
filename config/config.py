@@ -13,9 +13,34 @@ class Source:
     # VIDEO_SOURCE_FILENAME = ""
     VIDEO_SOURCE_FILENAME = "ch01 Lup ch1.mpg"
 
+class Window:
+    WINDOWNAMES = [
+        "Original",
+        "Window2",
+        "Window3",
+        "Window4",
+
+        "Window5",
+        "Window6",
+        "Window7",
+        "Window8"
+    ]
+
+    NUMOF_WINDOW_COLUMNS = 4
+    NUMOF_WINDOW_ROWS = 2
+    # FULL_SCREEN_WIDTH = 1000
+    # FULL_SCREEN_HEIGHT = 950
+    FULL_SCREEN_WIDTH = 959 * 2
+    FULL_SCREEN_HEIGHT = 1000
+    FIXED_BAR_HEIGHT = 40
+
+class StatusThreshold:
+    # 몇픽셀까지 정상으로 할것인지
+    THRESHOLD_IN_PIXEL = 20
+
 # 사진한장 처리후 딜레이타입
 DELAY_TYPE = DelayTypes.TIME
-DELAY_TIME_INSECONDS = 0.5
+DELAY_TIME_INMILLIS = 500
 # DELAY_TYPE = DelayTypes.KEYBOARDINTERRUPT
 
 

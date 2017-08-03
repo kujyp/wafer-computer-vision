@@ -17,4 +17,4 @@ def detect_target_region(image):
     masked = findregion_withvertices(image, vertices)
     croped = cropregion_withxy(image, (xst, yst, xed, yed))
 
-    return masked, croped, (xst, yst, xed, yed)
+    return masked, croped
