@@ -1,7 +1,6 @@
 import cv2
-import numpy as np
 
-from logics.regist.TemplateRegister import finddelta_withtemplate
+import numpy as np
 
 
 def findregion_withvertices(image, vertices):

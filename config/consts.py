@@ -39,12 +39,9 @@ class LineConfig:
     LIMIT_BOUNDARY = (10 / 1920)
     LINE_BOUNDARY_RANGE = int(VideoResolution.resolution_x * (250.0 / 1920.0))
 
-class color:
-    pass
-
-class MediaTypes:
-    VIDEO = 0
-    PHOTO = 1
+class Color:
+    BLUE = (255, 0, 0)
+    RED = (0, 0, 255)
 
 class DelayTypes:
     TIME = 0

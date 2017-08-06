@@ -2,11 +2,15 @@ from config.consts import *
 
 
 class Source:
-    # 입력 미디어 타입 : 비디오 / 사진
-    INPUT_MEDIA_TYPE = MediaTypes.VIDEO
-    # INPUT_MEDIA_TYPE = MediaTypes.PHOTO
+    CALIBRATION_PATH = "data/calibration/"
 
-    CALIBRATION_CROPPED_TEMPLATE_PATH = "data/calibration/cropped_template.png"
+    CALIBRATION_CROPPED_TEMPLATE_FILENAME  = "cropped_template.png"
+    CALIBRATION_CROPPED_TEMPLATE_PATH = CALIBRATION_PATH + CALIBRATION_CROPPED_TEMPLATE_FILENAME
+
+    CALIBRATION_CROPPED_TEMPLATEPOSITION_INPIXEL_FILENAME = "cropped_templateposition_inpixel.npy"
+    CALIBRATION_CROPPED_TEMPLATEPOSITION_INPIXEL_PATH = CALIBRATION_PATH + CALIBRATION_CROPPED_TEMPLATEPOSITION_INPIXEL_FILENAME
+    XEND = 'xend'
+    XSTART= 'xstart'
 
     VIDEO_SOURCE_DIRECTORY = "data/sources/"
     # VIDEO_SOURCE_FILENAME 비워두면 폴더내에서 랜덤하게 고름
