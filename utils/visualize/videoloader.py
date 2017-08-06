@@ -8,8 +8,6 @@ from utils.log.logging_ import logger
 
 
 class VideoLoader(Singleton):
-    NUM_SKIP_FRAMES = 30
-
     def __init__(self) -> None:
         super().__init__()
         self.load()
@@ -46,8 +44,7 @@ class VideoLoader(Singleton):
         self.video_capture = cv2.VideoCapture(self.get_filepath())
 
     def next(self):
-        img = None
-        for i in range(self.NUM_SKIP_FRAMES):
+        for i in range(Source.VIDEO_NUM_SKIP_FRAMES + 1):
             _, img = self.video_capture.read()
             if img is None:
                 break

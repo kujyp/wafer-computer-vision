@@ -1,10 +1,10 @@
 import cv2
 
-from config import config
+from config.config import Messages, Delay
 from config.consts import *
 from logics.drawer.status_visualizer import show_calibrated_rectangle, show_statusmessage
 from logics.region.region_detector import detect_target_region
-from logics.region.template_register import delta_status, finddelta
+from logics.region.template_register import delta_status, find_delta
 from utils.calibration.calibration import Calibration
 from utils.log.logging_ import logger
 from utils.visualize.videoloader import VideoLoader
@@ -16,7 +16,7 @@ window_manager = WindowManager.getInstance()
 calibration = Calibration.getInstance()
 
 # Calibration 안된경우에 Calibration 진행
-if calibration.isLoaded():
+if calibration.is_loaded():
     print("Calibration Loaded")
 else:
     raise("Need to calibration")
@@ -34,7 +34,7 @@ while True:
     window_manager.showWindows()
 
     # 정상과의 차이 감지
-    delta = finddelta(detected)
+    delta = find_delta(detected)
     withcalibratedrectangle = show_calibrated_rectangle(detected, delta)
     segmentedwithrectangle = show_calibrated_rectangle(detected, delta)
     window_manager.imgshow(segmentedwithrectangle, 2)
@@ -56,9 +56,9 @@ while True:
     logger.info("result={}".format(result_msg))
 
     # 딜레이
-    if config.DELAY_TYPE == DelayTypes.TIME:
-        cv2.waitKey(config.DELAY_TIME_INMILLIS)
-    elif config.DELAY_TYPE == DelayTypes.KEYBOARDINTERRUPT:
+    if Delay.DELAY_TYPE == DelayTypes.TIME:
+        cv2.waitKey(Delay.DELAY_TIME_INMILLIS)
+    elif Delay.DELAY_TYPE == DelayTypes.KEYBOARDINTERRUPT:
         cv2.waitKey(0)
 
 cv2.waitKey(0)
