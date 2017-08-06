@@ -1,11 +1,8 @@
 import cv2
 
-import numpy as np
-
-from config.config import Textdimens, Messages, StatusThreshold, Source
-from config.consts import Status, Color
-from models.calibration import Calibration
-from utils.log.logging_ import logger
+from config.config import StatusThreshold
+from config.consts import Status
+from utils.calibration.calibration import Calibration
 
 
 def regist(img, template):

@@ -5,7 +5,7 @@ from config.consts import *
 from logics.drawer.status_visualizer import show_calibrated_rectangle, show_statusmessage
 from logics.region.region_detector import detect_target_region
 from logics.region.template_register import delta_status, finddelta
-from models.calibration import Calibration
+from utils.calibration.calibration import Calibration
 from utils.log.logging_ import logger
 from utils.visualize.videoloader import VideoLoader
 from utils.visualize.windowmanager import WindowManager

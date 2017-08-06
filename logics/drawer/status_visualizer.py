@@ -1,9 +1,10 @@
 import cv2
+
 import numpy as np
 
 from config.config import Source, Textdimens
 from config.consts import Color
-from models.calibration import Calibration
+from utils.calibration.calibration import Calibration
 
 
 def show_calibrated_rectangle(image, seg, color=Color.BLUE):
